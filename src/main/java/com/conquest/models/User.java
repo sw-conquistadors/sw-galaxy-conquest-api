@@ -21,5 +21,11 @@ public class User {
 	private String password;
 	
 	private List<Game> gameList;
-	
+
+	public User(String username, String password, List<Game> gameList) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.gameList = gameList;
+	}
 }
