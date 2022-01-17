@@ -9,6 +9,6 @@ import com.conquest.models.Planet;
 @Repository
 public interface PlanetRepository extends JpaRepository<Planet, Integer>{ 
 	//Crud methods
-	Optional<Planet> findByName();
+	Optional<Planet> findByName(String name);
 	
 }
