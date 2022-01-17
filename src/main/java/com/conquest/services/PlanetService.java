@@ -1,6 +1,7 @@
 package com.conquest.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,11 @@ public class PlanetService {
 	
 	public Planet findById(int id) {
 		return planetRepo.getById(id);
+	}
+	
+	public Planet findByName(String name) {
+		Optional<Planet> option = planetRepo.findByName(name);
+		return option.isPresent() ? option.get() : null;
 	}
 	
 	public List<Planet> findAll(){
