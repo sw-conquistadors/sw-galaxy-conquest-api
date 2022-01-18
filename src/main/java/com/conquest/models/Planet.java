@@ -28,27 +28,27 @@ public class Planet {
 	private int id;// planet id 
 	private String url; // the planet's url
 	private String name;
-	private int type;
+	private String terrain;
 	
 	//The diameter of a planet determines how well it serves as a factory
-	private int diameter;
+	private String diameter;
 	
 	//The population of a planet determines how many troops can be recruited from it
-	private int population;
+	private String population;
 	
 	//The scope of a planet determines how many 
-	private int scope;
+	private String gravity;
 	
 	private String climate;
 
-	public Planet(String url, String name, int type, int diameter, int population, int scope, String climate) {
+	public Planet(String url, String name, String terrain, String diameter, String population, String gravity, String climate) {
 		super();
 		this.url = url;
 		this.name = name;
-		this.type = type;
+		this.terrain = terrain;
 		this.diameter = diameter;
 		this.population = population;
-		this.scope = scope;
+		this.gravity = gravity;
 		this.climate = climate;
 	}
 }

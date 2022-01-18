@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+@Data
 @Entity
 @Table(name="users")
 public class User {
@@ -20,12 +22,11 @@ public class User {
 	@Column(name="pwd", nullable=false)
 	private String password;
 	
-	private List<Game> gameList;
+	//private List<Game> gameList;
 
-	public User(String username, String password, List<Game> gameList) {
+	public User(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.gameList = gameList;
 	}
 }
