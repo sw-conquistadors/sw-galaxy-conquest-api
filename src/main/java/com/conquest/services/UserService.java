@@ -1,6 +1,7 @@
 package com.conquest.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,5 +37,18 @@ public class UserService {
 	
 	public User update(User user) {
 		return userRepo.save(user);
+	}
+	
+	public User findByUsername(String name) {
+		Optional<User> option = userRepo.findByUsername(name);
+		return option.isPresent() ? option.get() : null;
+	}
+	
+	public boolean isValidUsernameAndPassword(String username, String password) {
+		User user;
+		if((user = findByUsername(username)) != null) {
+			return user.getPassword().equals(password);
+		}
+		return false;
 	}
 }

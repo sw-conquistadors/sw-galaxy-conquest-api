@@ -50,34 +50,39 @@ public class PlanetService {
 	}
 	
 	public Planet makeApiCall(int num){ 
-	    final String uri = "https://swapi.dev/api/planets/" + num;
+	    final String url = "https://swapi.dev/api/planets/" + num;
 
 	    RestTemplate restTemplate = new RestTemplate();
 
-	    String result = restTemplate.getForObject(uri, String.class);
-	    
+	    String result = restTemplate.getForObject(url, String.class);
 
 	    JSONObject jsonResponse = null;
 		try {
-	                jsonResponse = new JSONObject(result);
-	        } catch (JSONException e) {
-	            e.printStackTrace();
-	        }
-	   //extract a value "name" from your json data:
-	   try{
-	    String name = jsonResponse.getString("name");
-		String terrain = jsonResponse.getString("terrain");
-		String diameter = jsonResponse.getString("diameter");
-		String population = jsonResponse.getString("population");
-		String gravity = jsonResponse.getString("gravity");
-		String climate = jsonResponse.getString("climate");
-		// return fully initialized obj
-		return new Planet(uri, name, terrain, diameter, population, gravity, climate);
-	    }catch(JSONException e) {
-	            e.printStackTrace();
-	        }
-	   // return nothing
-	   return null;
+			jsonResponse = new JSONObject(result);
+	    } 
+		catch (JSONException error) {
+			error.printStackTrace();
+	    }
+	   
+		try{
+			//extract values from json data:
+			String name = jsonResponse.getString("name");
+			String terrain = jsonResponse.getString("terrain");
+			String diameter = jsonResponse.getString("diameter");
+			String population = jsonResponse.getString("population");
+			String gravity = jsonResponse.getString("gravity");
+			String climate = jsonResponse.getString("climate");
+			
+			// return fully initialized obj
+			return new Planet(url, name, terrain, diameter, population, gravity, climate);
+	    }
+	   catch(JSONException error) 
+	   {
+		   error.printStackTrace();
+		   // return nothing
+		   return null;
+	   	}
+
 	}
 	
 	public void addAllPlanetsToDB() {
