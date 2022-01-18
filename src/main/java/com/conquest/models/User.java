@@ -9,6 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.Data;
+@Data
 @Entity
 @Table(name="users")
 public class User {
@@ -19,13 +23,10 @@ public class User {
 	private String username;
 	@Column(name="pwd", nullable=false)
 	private String password;
-	
-	private List<Game> gameList;
 
-	public User(String username, String password, List<Game> gameList) {
+	public User(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.gameList = gameList;
 	}
 }
