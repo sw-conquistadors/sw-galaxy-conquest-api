@@ -26,7 +26,7 @@ public class SwGcApiApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		//addAllPlanetsToDB();
+		//planetServ.addAllPlanetsToDB();
 		System.out.println("test");
 	}
 

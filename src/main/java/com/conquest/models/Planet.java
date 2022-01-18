@@ -1,5 +1,6 @@
 package com.conquest.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,21 +28,23 @@ public class Planet {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;// planet id 
 	private String url; // the planet's url
+	@Column(unique=true, nullable=false)
 	private String name;
 	private String terrain;
 	
 	//The diameter of a planet determines how well it serves as a factory
-	private String diameter;
+	private int diameter;
 	
 	//The population of a planet determines how many troops can be recruited from it
-	private String population;
+	private long population;
 	
-	//The scope of a planet determines how many 
-	private String gravity;
-	
+	//The gravity of a planet 
+	@Column(scale=2)
+	private double gravity;
+	//The climate of a planet 
 	private String climate;
 
-	public Planet(String url, String name, String terrain, String diameter, String population, String gravity, String climate) {
+	public Planet(String url, String name, String terrain, int diameter, long population, double gravity, String climate) {
 		super();
 		this.url = url;
 		this.name = name;

@@ -44,11 +44,11 @@ public class UserService {
 		return option.isPresent() ? option.get() : null;
 	}
 	
-	public boolean isValidUsernameAndPassword(String username, String password) {
-		User user;
+	public User isValidUsernameAndPassword(String username, String password) {
+		User user = null;
 		if((user = findByUsername(username)) != null) {
-			return user.getPassword().equals(password);
+			return user;
 		}
-		return false;
+		return user;
 	}
 }
