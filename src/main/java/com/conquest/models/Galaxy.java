@@ -6,8 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.conquest.services.JsonViewProfiles;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +28,13 @@ import lombok.NoArgsConstructor;
 public final class Galaxy {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="galaxy_id")
+	@JsonView({ JsonViewProfiles.Galaxy.class, JsonViewProfiles.Planet.class })
 	private int id;
 	//Creates a map which will be used to keep track of the planet objects within the Galaxy
 	@ManyToMany
-	private Set<Planet> locations;
+	@JoinTable(name="galaxies_planets",
+	joinColumns = @JoinColumn(name="galaxy_id"),
+	inverseJoinColumns = @JoinColumn(name="planet_id"))
+	@JsonView(JsonViewProfiles.Galaxy.class)
+	private Set<Planet> planets;
 }
