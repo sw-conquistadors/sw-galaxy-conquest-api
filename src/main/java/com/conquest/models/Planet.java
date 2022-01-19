@@ -31,7 +31,9 @@ public class Planet {
 	@Column(unique=true, nullable=false)
 	private String name;
 	private String terrain;
-	
+	// these fields determine how effective a planet is at maintaining/improving the army
+	private int recruitment;
+	private int factory;
 	//The diameter of a planet determines how well it serves as a factory
 	private int diameter;
 	
@@ -43,16 +45,20 @@ public class Planet {
 	private double gravity;
 	//The climate of a planet 
 	private String climate;
-
-	public Planet(String url, String name, String terrain, int diameter, long population, double gravity, String climate) {
+	public Planet(String url, String name, String terrain, int recruitment, int factory, int diameter, long population,
+			double gravity, String climate) {
 		super();
 		this.url = url;
 		this.name = name;
 		this.terrain = terrain;
+		this.recruitment = recruitment;
+		this.factory = factory;
 		this.diameter = diameter;
 		this.population = population;
 		this.gravity = gravity;
 		this.climate = climate;
 	}
+
+
 }
 

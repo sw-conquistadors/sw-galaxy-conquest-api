@@ -81,22 +81,26 @@ public class PlanetService {
 			String climate = jsonResponse.getString("climate");
 			
 			// convert String values into numeric
-			if(diameter.equalsIgnoreCase("unknown")) {
-				diameterVal = random.nextInt(100000);
+			if(diameter.equalsIgnoreCase("unknown")) { // remove unknown diameters
+				diameterVal = random.nextInt(100000); // generate a random diameter
 			}
-			else if(!diameter.equalsIgnoreCase("unknown")&&jsonResponse.getInt("diameter") <= 0) {
-				diameterVal = random.nextInt(100000);
+			// diameter must be numeric and greater than zero
+			else if(!diameter.equalsIgnoreCase("unknown") 
+					&& jsonResponse.getInt("diameter") <= 0) {
+				diameterVal = random.nextInt(100000); // generate a random diameter
 			}
+			// get the valid diameter 
 			else {
 				diameterVal = jsonResponse.getInt("diameter");
 			}
 			if(population.equalsIgnoreCase("unknown")) {
-				populationVal = random.nextLong(350000000);
+				populationVal = random.nextLong(350000000); // generate a random population
 			}
 			else {
 				populationVal = jsonResponse.getInt("population");
 			}
-			if(gravity.equalsIgnoreCase("unknown")||gravity.equalsIgnoreCase("N/A")) {
+			if(gravity.equalsIgnoreCase("unknown")
+				||gravity.equalsIgnoreCase("N/A")) {
 				gravityVal = random.nextDouble(2.0);
 			}
 			else {
@@ -105,13 +109,34 @@ public class PlanetService {
 				gravityVal = Double.valueOf(tempArr[0]);
 			}
 			
+			// From the base API values, calculate the recruitment and factory values for each planet
+			
+			int recruitment = 1;
+			long temp = populationVal;
+			while (temp > 10) {
+				 recruitment ++;
+				 temp /= 10;
+			}
+			
+			int factory = 1;
+			int tempDiameter = diameterVal;
+			double tempGravity = gravityVal;
+			while (tempDiameter > 10) {
+			  factory ++;
+			  tempDiameter = tempDiameter/10;
+			}
+			while (tempGravity > 0) {
+			  factory ++;
+			  tempGravity -= .25;
+			}
+			 
+			
 			// return fully initialized object
-			return new Planet(url, name, terrain, diameterVal, populationVal, gravityVal, climate);
+			return new Planet(url, name, terrain, recruitment, factory, diameterVal, populationVal, gravityVal, climate);
 	    }
 	   catch(JSONException error) 
 	   {
 		   error.printStackTrace();
-		   // return nothing
 		   return null;
 	   	}
 
