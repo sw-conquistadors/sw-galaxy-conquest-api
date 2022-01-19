@@ -84,6 +84,9 @@ public class PlanetService {
 			if(diameter.equalsIgnoreCase("unknown")) {
 				diameterVal = random.nextInt(100000);
 			}
+			else if(!diameter.equalsIgnoreCase("unknown")&&jsonResponse.getInt("diameter") <= 0) {
+				diameterVal = random.nextInt(100000);
+			}
 			else {
 				diameterVal = jsonResponse.getInt("diameter");
 			}
@@ -102,8 +105,7 @@ public class PlanetService {
 				gravityVal = Double.valueOf(tempArr[0]);
 			}
 			
-			
-			// return fully initialized obj
+			// return fully initialized object
 			return new Planet(url, name, terrain, diameterVal, populationVal, gravityVal, climate);
 	    }
 	   catch(JSONException error) 
