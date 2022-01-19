@@ -1,5 +1,6 @@
 package com.conquest.services;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -10,14 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
+import com.conquest.models.Galaxy;
 import com.conquest.models.Planet;
 import com.conquest.repository.PlanetRepository;
 
 @Service
 public class PlanetService {
 	private static final int MAX_PLANETS = 60;
+
+	private static final int TIER_TWO_MAX = 19;
+
+	private static final int TIER_ONE_MAX = 17;
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -42,8 +49,8 @@ public class PlanetService {
 		return planetRepo.save(planet);
 	}
 	
-	public void remove(Planet planet) {
-		planetRepo.delete(planet);
+	public void remove(int id) {
+		planetRepo.delete(findById(id));
 	}
 	
 	public Planet update(Planet planet) {
@@ -130,9 +137,22 @@ public class PlanetService {
 			  tempGravity -= .25;
 			}
 			 
+			int tier;
+			int average = recruitment + factory;
+			if(average>TIER_TWO_MAX) {
+				tier = 1;
+			}
+			else if(average>TIER_ONE_MAX) {
+				tier = 2;
+			}
+			else {
+				tier = 3;
+			}
+			
+			average /= 2;
 			
 			// return fully initialized object
-			return new Planet(url, name, terrain, recruitment, factory, diameterVal, populationVal, gravityVal, climate);
+			return new Planet(url, name, terrain, tier, average, recruitment, factory, diameterVal, populationVal, gravityVal, climate, new HashSet<Galaxy>());
 	    }
 	   catch(JSONException error) 
 	   {
@@ -147,5 +167,4 @@ public class PlanetService {
 			add(makeApiCall(index));
 		}
 	}
-
 }

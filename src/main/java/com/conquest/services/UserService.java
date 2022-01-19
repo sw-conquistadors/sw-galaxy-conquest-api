@@ -31,8 +31,8 @@ public class UserService {
 		return userRepo.save(user);
 	}
 	
-	public void remove(User user) {
-		userRepo.delete(user);
+	public void remove(int id) {
+		userRepo.delete(findById(id));
 	}
 	
 	public User update(User user) {
@@ -44,11 +44,13 @@ public class UserService {
 		return option.isPresent() ? option.get() : null;
 	}
 	
-	public User isValidUsernameAndPassword(String username, String password) {
-		User user = null;
+	public User validate(String username, String password) {
+		User user;
 		if((user = findByUsername(username)) != null) {
-			return user;
+			if(user.getPassword().equals(password)) {
+				return user;
+			}
 		}
-		return user;
+		return null;
 	}
 }

@@ -1,12 +1,19 @@
 package com.conquest.models;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.conquest.services.JsonViewProfiles;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,42 +28,61 @@ import lombok.NoArgsConstructor;
 //Each game contains 20 planets randomly determined by the API
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="planets")
 public class Planet {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@JsonView({ JsonViewProfiles.Galaxy.class, JsonViewProfiles.Planet.class })
 	private int id;// planet id 
 	private String url; // the planet's url
+	/*
+	 * these fields are used in the classification of a planet
+	 */
+	
+	@Column(scale=2)
+	private double gravity;//The gravity of a planet 
+	private String climate;//The climate of a planet 
 	@Column(unique=true, nullable=false)
-	private String name;
-	private String terrain;
-	// these fields determine how effective a planet is at maintaining/improving the army
+	private String name; // Name of the planet(Unique)
+	private String terrain; 
+	/*
+	 *  these fields are used in the ranking of planets
+	 */
+	private int tier;
+	private int average;
+	/*
+	 *  these fields determine how effective a planet is at maintaining/improving the army
+	 */
 	private int recruitment;
 	private int factory;
 	//The diameter of a planet determines how well it serves as a factory
 	private int diameter;
-	
 	//The population of a planet determines how many troops can be recruited from it
 	private long population;
 	
-	//The gravity of a planet 
-	@Column(scale=2)
-	private double gravity;
-	//The climate of a planet 
-	private String climate;
-	public Planet(String url, String name, String terrain, int recruitment, int factory, int diameter, long population,
-			double gravity, String climate) {
+	
+	// A list of galaxies that this planet is a part of
+	@JsonView(JsonViewProfiles.Planet.class)
+    @ManyToMany(mappedBy = "planets")
+    private Set<Galaxy> galaxies;
+
+	public Planet(String url, String name, String terrain, int tier, int average, int recruitment, int factory,
+			int diameter, long population, double gravity, String climate, Set<Galaxy> galaxies) {
 		super();
 		this.url = url;
 		this.name = name;
 		this.terrain = terrain;
+		this.tier = tier;
+		this.average = average;
 		this.recruitment = recruitment;
 		this.factory = factory;
 		this.diameter = diameter;
 		this.population = population;
 		this.gravity = gravity;
 		this.climate = climate;
+		this.galaxies = galaxies;
 	}
 
 
