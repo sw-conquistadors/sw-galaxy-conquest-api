@@ -17,15 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.conquest.models.User;
 import com.conquest.services.UserService;
 
-@RestController // automatically infers that the return value of all methods below will be within the HttpResponse body
-@RequestMapping("/users") // all methods available at localhost:5000/users...
+@RestController 
+@RequestMapping("/users") 
 public class UserController {
 	
 	
 	@Autowired
 	UserService userServ;
 	
-	// a GET request to the above URL
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
 		// Spring Boot web starter has Jackson Object Mapper automatically built in so this willbe returned as JSON
