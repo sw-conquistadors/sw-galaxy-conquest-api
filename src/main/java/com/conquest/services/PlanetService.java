@@ -3,7 +3,7 @@ package com.conquest.services;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
 import com.conquest.models.Galaxy;
@@ -77,8 +76,6 @@ public class PlanetService {
 			double gravityVal;
 			long populationVal;
 			
-			Random random = new Random();
-			
 			//extract values from json data:
 			String name = jsonResponse.getString("name");
 			String terrain = jsonResponse.getString("terrain");
@@ -89,26 +86,26 @@ public class PlanetService {
 			
 			// convert String values into numeric
 			if(diameter.equalsIgnoreCase("unknown")) { // remove unknown diameters
-				diameterVal = random.nextInt(100000); // generate a random diameter
+				diameterVal = ThreadLocalRandom.current().nextInt(100_000); // generate a random diameter
 			}
 			// diameter must be numeric and greater than zero
 			else if(!diameter.equalsIgnoreCase("unknown") 
 					&& jsonResponse.getInt("diameter") <= 0) {
-				diameterVal = random.nextInt(100000); // generate a random diameter
+				diameterVal = ThreadLocalRandom.current().nextInt(100_000); // generate a random diameter
 			}
 			// get the valid diameter 
 			else {
 				diameterVal = jsonResponse.getInt("diameter");
 			}
 			if(population.equalsIgnoreCase("unknown")) {
-				populationVal = random.nextLong(350000000); // generate a random population
+				populationVal = ThreadLocalRandom.current().nextLong(350_000_000); // generate a random population
 			}
 			else {
 				populationVal = jsonResponse.getInt("population");
 			}
 			if(gravity.equalsIgnoreCase("unknown")
 				||gravity.equalsIgnoreCase("N/A")) {
-				gravityVal = random.nextDouble(2.0);
+				gravityVal = ThreadLocalRandom.current().nextDouble(2.0);
 			}
 			else {
 				String tempStr = jsonResponse.getString("gravity");
