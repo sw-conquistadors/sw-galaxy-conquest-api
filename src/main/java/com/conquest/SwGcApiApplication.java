@@ -30,4 +30,3 @@ public class SwGcApiApplication implements CommandLineRunner{
 	}
 
 }
-//ssh -i team-2-211129.pem ec2-user@ec2-54-144-253-62.compute-1.amazonaws.com
