@@ -3,6 +3,7 @@ package com.conquest.services;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
@@ -148,8 +149,11 @@ public class PlanetService {
 			
 			average /= 2;
 			
+			String image = "../sw-galaxy-conquest-api/assets/" + 0 + ".png";
+			//System.out.println(image);
 			// return fully initialized object
-			return new Planet(url, name, terrain, tier, average, recruitment, factory, diameterVal, populationVal, gravityVal, climate, new HashSet<Galaxy>());
+			return new Planet(url, image, gravityVal, climate, name, terrain, tier,
+					average, recruitment, factory, diameterVal, populationVal, new HashSet<Galaxy>());
 	    }
 	   catch(JSONException error) 
 	   {
