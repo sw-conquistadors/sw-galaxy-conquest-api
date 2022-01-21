@@ -28,5 +28,4 @@ public class SwGcApiApplication implements CommandLineRunner{
 		//planetServ.addAllPlanetsToDB();
 		System.out.println("test");
 	}
-
 }

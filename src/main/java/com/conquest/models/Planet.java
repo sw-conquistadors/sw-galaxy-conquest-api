@@ -37,6 +37,7 @@ public class Planet {
 	@JsonView({ JsonViewProfiles.Galaxy.class, JsonViewProfiles.Planet.class })
 	private int id;// planet id 
 	private String url; // the planet's url
+	private String image;
 	/*
 	 * these fields are used in the classification of a planet
 	 */
@@ -68,10 +69,14 @@ public class Planet {
     @ManyToMany(mappedBy = "planets")
     private Set<Galaxy> galaxies;
 
-	public Planet(String url, String name, String terrain, int tier, int average, int recruitment, int factory,
-			int diameter, long population, double gravity, String climate, Set<Galaxy> galaxies) {
+
+	public Planet(String url, String image, double gravity, String climate, String name, String terrain, int tier,
+			int average, int recruitment, int factory, int diameter, long population, Set<Galaxy> galaxies) {
 		super();
 		this.url = url;
+		this.image = image;
+		this.gravity = gravity;
+		this.climate = climate;
 		this.name = name;
 		this.terrain = terrain;
 		this.tier = tier;
@@ -80,11 +85,8 @@ public class Planet {
 		this.factory = factory;
 		this.diameter = diameter;
 		this.population = population;
-		this.gravity = gravity;
-		this.climate = climate;
 		this.galaxies = galaxies;
 	}
-
 
 }
 

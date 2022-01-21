@@ -57,4 +57,10 @@ public class PlanetController {
 	public void removePlanet(@PathVariable("id") int id) {
 		planetServ.remove(id);
 	}
+	
+	@GetMapping("/assets/{id}")
+	public String getImage(@PathVariable("id") int id) {
+		
+		return planetServ.findById(id).getImage();
+	}
 }
