@@ -19,8 +19,8 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepo;
 	
-	public User findById(int id) {
-		return userRepo.getById(id);
+	public Optional<User> findById(int id) {
+		return Optional.of(userRepo.getById(id));
 	}
 	
 	public List<User> findAll(){
@@ -32,9 +32,12 @@ public class UserService {
 	}
 	
 	public User remove(int id) {
-		User removedUser = findById(id);
-		userRepo.delete(removedUser);
-		return removedUser;
+		Optional<User> data = findById(id); 
+		User removedUser = data.isPresent() ? data.get() : null; 
+		if (removedUser != null) {
+			userRepo.delete(removedUser);
+		}
+		return removedUser;			
 	}
 	
 	public User update(User user) {
@@ -46,13 +49,4 @@ public class UserService {
 		return option.isPresent() ? option.get() : null;
 	}
 	
-	public User validate(String username, String password) {
-		User user;
-		if((user = findByUsername(username)) != null) {
-			if(user.getPassword().equals(password)) {
-				return user;
-			}
-		}
-		return null;
-	}
 }

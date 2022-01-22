@@ -1,6 +1,7 @@
 package com.conquest.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.conquest.models.User;
@@ -65,13 +67,16 @@ public class UserController {
 	
 	// GET - getById() - extract the id from the URI like in findByUsername();
 	@GetMapping("/{id}")
-	public ResponseEntity<?> findUserById(@PathVariable("id") int id) {
-		User returnedUser;
-		if((returnedUser = userServ.findById(id)) != null) {
+	public ResponseEntity<User> findUserById(@PathVariable("id") int id) {
+		Optional<User> optionalUser;
+		if((optionalUser = userServ.findById(id)) != null) {
+			System.out.println(optionalUser + "==========================\n\n\n\n\n=====================");
+			User returnedUser = optionalUser.isPresent() ? optionalUser.get() : null;
 			return ResponseEntity.ok()
 	                    .body(returnedUser);
 		}
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//		return ResponseEntity.ok(userServ.findById(id));
 	}
 	
 	@DeleteMapping("/{id}")
@@ -84,14 +89,19 @@ public class UserController {
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
-	@GetMapping("/validate/{username}")  
-	public ResponseEntity<?> validate(@PathVariable("username") String username, @PathVariable("password") String password) {
-		User validUser;
-		if((validUser = userServ.validate(username, password)) != null) {
-			return ResponseEntity.ok()
-                    .body(validUser);
+	@PostMapping("/validate")
+	public ResponseEntity<?> validate(@Valid @RequestBody User u) {
+		User user;
+		if((user = userServ.findByUsername(u.getUsername())) != null) {
+			if(user.getPassword().equals(u.getPassword())) {
+				return ResponseEntity.ok()
+	                    .body(user);
+			}
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
+	
 }
 
