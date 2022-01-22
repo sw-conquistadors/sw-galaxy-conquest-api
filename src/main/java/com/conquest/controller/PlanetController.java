@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.conquest.models.Planet;
-import com.conquest.models.User;
 import com.conquest.services.PlanetService;
 
 import lombok.var;
@@ -83,6 +82,7 @@ public class PlanetController {
     public ResponseEntity<byte[]> getImage(@PathVariable("name") String name) throws IOException {
     	Planet returnedPlanet = planetServ.findByName(name);
     	String image = returnedPlanet.getImage();
+//    	String image = "image/0.png";
         var imgFile = new ClassPathResource(image);
         byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
 

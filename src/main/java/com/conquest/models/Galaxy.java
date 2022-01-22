@@ -12,7 +12,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.conquest.services.JsonViewProfiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.AllArgsConstructor;
