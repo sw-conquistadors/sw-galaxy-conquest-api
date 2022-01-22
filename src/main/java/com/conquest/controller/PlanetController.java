@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.conquest.models.Planet;
+import com.conquest.models.User;
 import com.conquest.services.PlanetService;
 
 @RestController
@@ -33,10 +35,14 @@ public class PlanetController {
 		return ResponseEntity.ok(planetServ.findAll()); 
 	}
 	
-	@GetMapping("/find/{name}")
-	public ResponseEntity<Planet> findByPlanetName(@PathVariable("name") String username) {
-		
-		return ResponseEntity.ok(planetServ.findByName(username));
+	@GetMapping("/find/{name}") 
+	public ResponseEntity<?> findByPlanetName(@PathVariable("name") String name) {
+		Planet returnedPlanet;
+		if((returnedPlanet = planetServ.findByName(name)) != null) {
+			return ResponseEntity.ok()
+	                    .body(returnedPlanet);
+		}
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	// Think of how you implement the following methods
