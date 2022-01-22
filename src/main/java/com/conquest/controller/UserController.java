@@ -70,7 +70,6 @@ public class UserController {
 	public ResponseEntity<User> findUserById(@PathVariable("id") int id) {
 		Optional<User> optionalUser;
 		if((optionalUser = userServ.findById(id)) != null) {
-			System.out.println(optionalUser + "==========================\n\n\n\n\n=====================");
 			User returnedUser = optionalUser.isPresent() ? optionalUser.get() : null;
 			return ResponseEntity.ok()
 	                    .body(returnedUser);
