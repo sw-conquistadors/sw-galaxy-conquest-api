@@ -81,7 +81,7 @@
 	<build>
 	   <resources>
      <resource>
-       <directory>assets</directory>
+       <directory>src/main/resources/image</directory>
      </resource>
    </resources>
 		<plugins>
