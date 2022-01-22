@@ -1,4 +1,4 @@
-package com.revature.controller;
+package com.conquest.controller;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class UserController {
 		userServ.remove(id);
 	}
 	
-	@GetMapping("/find/{username}")  
+	@GetMapping("/validate/{username}")  
 	public ResponseEntity<User> validate(@PathVariable("username") String username, @PathVariable("password") String password) {
 		
 		return ResponseEntity.ok(userServ.validate(username, password));
