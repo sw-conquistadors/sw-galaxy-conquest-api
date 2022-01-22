@@ -15,8 +15,8 @@ public class SwGcApiApplication implements CommandLineRunner{
 	// logger
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	@Autowired
-	PlanetService planetServ;
+//	@Autowired
+//	PlanetService planetServ;
 	
 	
 	public static void main(String[] args) {
