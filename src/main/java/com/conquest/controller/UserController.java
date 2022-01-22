@@ -1,5 +1,6 @@
 package com.conquest.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -29,24 +30,31 @@ public class UserController {
 	UserService userServ;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> getAllUsers() {
-		// Spring Boot web starter has Jackson Object Mapper automatically built in so this willbe returned as JSON
-		return ResponseEntity.ok(userServ.findAll()); // findAll() from userService!
-	}
-	
-	@GetMapping("/find/{username}")  // localhost:5000/users/find/spongebob <- we extract this parameter
-	public ResponseEntity<User> findByUsername(@PathVariable("username") String username) {
+	public ResponseEntity<List<?>> getAllUsers() {
+		List<User> users = userServ.findAll();
+		if(!users.isEmpty()) {
+			return ResponseEntity.ok()
+                    .body(users);
+		}
 		
-		return ResponseEntity.ok(userServ.findByUsername(username));
+		// Spring Boot web starter has Jackson Object Mapper automatically built in so this will be returned as JSON
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
-	// Think of how you implement the following methods
+	@GetMapping("/find/{username}") 
+	public ResponseEntity<?> findByUsername(@PathVariable("username") String username) {
+		User returnedUser;
+		if((returnedUser = userServ.findByUsername(username)) != null) {
+			return ResponseEntity.ok()
+	                    .body(returnedUser);
+		}
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
 	
 	// POST - add()
 	@PostMapping("/add")
 	public ResponseEntity<?> addUser(@Valid @RequestBody User u) { // valid annotation ensures that we can only accept a VALID user object
 		// will return the newly added User object in JSON
-//		return ResponseEntity.ok(userServ.add(u));
 		User returnedUser;
 		if((returnedUser = userServ.add(u)) != null) {
 			return ResponseEntity.ok()
@@ -55,38 +63,36 @@ public class UserController {
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
-//	@PostMapping("/add")
-//	public ResponseEntity<?> registration(@RequestBody User user) {
-//		if (userv.login(user.getEmail(), user.getPassword()) != null) {
-//			userv.insertUser(user);
-//			System.out.println(user.toString());
-//			HttpHeaders headers = new HttpHeaders();
-//	        headers.add(HttpHeaders.AUTHORIZATION, jws.tokenGenerator("email: " + user.getEmail() + ", pasword: " + user.getPassword()).serialize());
-//			  return ResponseEntity.ok()
-//	                    .headers(headers)
-//	                    .body(null);
-//		}
-//		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//	}
-
-	
 	
 	// GET - getById() - extract the id from the URI like in findByUsername();
 	@GetMapping("/{id}")
-	public ResponseEntity<User> findUserById(@PathVariable("id") int id) {
-		
-		return ResponseEntity.ok(userServ.findById(id));
+	public ResponseEntity<?> findUserById(@PathVariable("id") int id) {
+		User returnedUser;
+		if((returnedUser = userServ.findById(id)) != null) {
+			return ResponseEntity.ok()
+	                    .body(returnedUser);
+		}
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	@DeleteMapping("/{id}")
-	public void removeUser(@PathVariable("id") int id) {
-		userServ.remove(id);
+	public ResponseEntity<?> removeUser(@PathVariable("id") int id) {
+		User returnedUser;
+		if((returnedUser = userServ.remove(id)) != null) {
+			return ResponseEntity.ok()
+	                    .body(returnedUser);
+		}
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	@GetMapping("/validate/{username}")  
-	public ResponseEntity<User> validate(@PathVariable("username") String username, @PathVariable("password") String password) {
-		
-		return ResponseEntity.ok(userServ.validate(username, password));
+	public ResponseEntity<?> validate(@PathVariable("username") String username, @PathVariable("password") String password) {
+		User validUser;
+		if((validUser = userServ.validate(username, password)) != null) {
+			return ResponseEntity.ok()
+                    .body(validUser);
+		}
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 }
 

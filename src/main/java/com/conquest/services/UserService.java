@@ -31,8 +31,10 @@ public class UserService {
 		return userRepo.save(user);
 	}
 	
-	public void remove(int id) {
-		userRepo.delete(findById(id));
+	public User remove(int id) {
+		User removedUser = findById(id);
+		userRepo.delete(removedUser);
+		return removedUser;
 	}
 	
 	public User update(User user) {
