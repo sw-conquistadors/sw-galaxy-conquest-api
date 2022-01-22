@@ -1,6 +1,5 @@
 package com.conquest.controller;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.validation.Valid;

@@ -37,4 +37,11 @@ public final class Galaxy {
 	inverseJoinColumns = @JoinColumn(name="planet_id"))
 	@JsonView(JsonViewProfiles.Galaxy.class)
 	private Set<Planet> planets;
+	
+	public Galaxy(Set<Planet> planets) {
+		super();
+		this.planets = planets;
+	}
+	
+	
 }
