@@ -47,9 +47,10 @@ public class UserController {
 	public ResponseEntity<?> addUser(@Valid @RequestBody User u) { // valid annotation ensures that we can only accept a VALID user object
 		// will return the newly added User object in JSON
 //		return ResponseEntity.ok(userServ.add(u));
-		if(userServ.add(u) != null) {
+		User returnedUser;
+		if((returnedUser = userServ.add(u)) != null) {
 			return ResponseEntity.ok()
-	                    .body(null);
+	                    .body(returnedUser);
 		}
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
