@@ -1,4 +1,4 @@
-package com.revature.controller;
+package com.conquest.controller;
 import java.util.List;
 
 import javax.validation.Valid;
