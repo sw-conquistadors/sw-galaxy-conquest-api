@@ -18,5 +18,60 @@ public class Planet {
 	
 	//The scope of a planet determines how many 
 	private int scope;
+	
+	//The type of planet this is
+	//0 = enemy controlled
+	//1 = recruiting
+	//2 = factory
+	private int planetType; 
+	
+	public int recruitingValue() {
+		int population = this.population;
+		int recruitment = 0;
+		while (population > 10) {
+			recruitment ++;
+			population = population/10;
+		}
+		
+		return recruitment;
+	}
+	
+	public int factoryValue(Planet planet) {
+		
+		int diameter = this.diameter;
+		int factory = 0;
+		while (diameter > 10) {
+			factory++;
+			diameter = diameter/10;
+		}
+		
+		return factory;
+	}
+
+	public int getDiameter() {
+		return diameter;
+	}
+
+	public void setDiameter(int diameter) {
+		this.diameter = diameter;
+	}
+
+	public int getPopulation() {
+		return population;
+	}
+
+	public void setPopulation(int population) {
+		this.population = population;
+	}
+
+	public int getScope() {
+		return scope;
+	}
+
+	public void setScope(int scope) {
+		this.scope = scope;
+	}
+	
+	
 }
 
