@@ -15,8 +15,8 @@ public class SwGcApiApplication implements CommandLineRunner{
 	// logger
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-//	@Autowired
-//	PlanetService planetServ;
+	@Autowired
+	PlanetService planetServ;
 	
 	
 	public static void main(String[] args) {
@@ -25,7 +25,7 @@ public class SwGcApiApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-//		planetServ.addAllPlanetsToDB();
-		System.out.println("test");
+		planetServ.addAllPlanetsToDB();
+		System.out.println("Planets Populated");
 	}
 }

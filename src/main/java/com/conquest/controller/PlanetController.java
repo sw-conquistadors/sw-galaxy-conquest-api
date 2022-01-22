@@ -1,12 +1,16 @@
 package com.conquest.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +18,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.conquest.models.Planet;
-import com.conquest.models.User;
 import com.conquest.services.PlanetService;
+
+import lombok.var;
 
 @RestController
 @RequestMapping("/planets")
@@ -66,9 +72,23 @@ public class PlanetController {
 		planetServ.remove(id);
 	}
 	
-	@GetMapping("/assets/{id}")
-	public String getImage(@PathVariable("id") int id) {
-		
-		return planetServ.findById(id).getImage();
-	}
+//	@GetMapping("/assets/{id}")
+//	public String getImage(@PathVariable("id") int id) {
+//		
+//		return planetServ.findById(id).getImage();
+//	}
+    @RequestMapping(value = "/image/{name}", method = RequestMethod.GET,
+            produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getImage(@PathVariable("name") String name) throws IOException {
+    	Planet returnedPlanet = planetServ.findByName(name);
+    	String image = returnedPlanet.getImage();
+//    	String image = "image/0.png";
+        var imgFile = new ClassPathResource(image);
+        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(bytes);
+    }
 }

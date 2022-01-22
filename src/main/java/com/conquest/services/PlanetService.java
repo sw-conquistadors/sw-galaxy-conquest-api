@@ -149,7 +149,7 @@ public class PlanetService {
 			
 			average /= 2;
 			
-			String image = "../sw-galaxy-conquest-api/assets/" + 0 + ".png";
+			String image = "image/" + 0 + ".png";
 			//System.out.println(image);
 			// return fully initialized object
 			return new Planet(url, image, gravityVal, climate, name, terrain, tier,
