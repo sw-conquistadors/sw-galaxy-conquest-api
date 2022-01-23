@@ -1,12 +1,14 @@
 package com.conquest.controller;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.conquest.models.Galaxy;
 import com.conquest.models.Game;
+import com.conquest.models.Planet;
+import com.conquest.models.User;
 import com.conquest.services.GameService;
+
+import lombok.var;
 
 @RestController
 @RequestMapping("/games")
@@ -27,8 +34,15 @@ public class GameController {
 	
 	// a GET request to the above URL
 	@GetMapping
-	public ResponseEntity<List<Game>> getAllGames() {
-		return ResponseEntity.ok(gameServ.findAll()); 
+	public ResponseEntity<List<?>> getAllGames() {
+		List<Game> games = gameServ.findAll();
+		if(!games.isEmpty()) {
+			return ResponseEntity.ok()
+                    .body(games);
+		}
+		
+		// Spring Boot web starter has Jackson Object Mapper automatically built in so this will be returned as JSON
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	// POST - add()
@@ -40,13 +54,38 @@ public class GameController {
 	
 	// GET - getById() - extract the id from the URI like in findByUsername();
 	@GetMapping("/{id}")
-	public ResponseEntity<Game> findGameById(@PathVariable("id") int id) {
-		
-		return ResponseEntity.ok(gameServ.findById(id));
+	public ResponseEntity<?> findGameById(@PathVariable("id") int id) {
+		Optional<Game> optionalGame;
+		if((optionalGame = gameServ.findById(id)) != null) {
+			Game returnedGame = optionalGame.isPresent() ? optionalGame.get() : null;
+			return ResponseEntity.ok()
+	                    .body(returnedGame);
+		}
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
-	@DeleteMapping("/{id}")
-	public void removeGame(@PathVariable("id") int id) {
-		gameServ.remove(id);
+	@GetMapping("/galaxy/{id}")
+	public ResponseEntity<Set<Planet>> getAllPlanetsOfAGalaxy(@PathVariable("id") int id) {
+		Optional<Game> optionalGame;
+		if((optionalGame = gameServ.findById(id)) != null) {
+			Game returnedGame = optionalGame.isPresent() ? optionalGame.get() : null;
+			Galaxy galaxy;
+			if((galaxy = returnedGame.getGalaxy())!=null) {
+				if(!galaxy.getPlanets().isEmpty()) {
+					return ResponseEntity.ok().body(galaxy.getPlanets());
+				}
+			}
+		}
+		
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
+	
+	/*
+	 * User returnedUser;
+		if((returnedUser = userServ.add(u)) != null) {
+			return ResponseEntity.ok()
+	                    .body(returnedUser);
+		}
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	 */
 }
