@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.conquest.models.Galaxy;
 import com.conquest.models.Game;
-import com.conquest.models.User;
 import com.conquest.repository.GameRepository;
 
 @Service
@@ -44,4 +44,14 @@ public class GameService {
 	public Game update(Game game) {
 		return gameRepo.save(game);
 	}
+	
+	public Galaxy getGalaxy(int id) {
+		return gameRepo.getById(id).getGalaxy();
+	}
+	
+//	public Galaxy getPlanets(int id) {
+//		Game currentGame = gameRepo.getById(id);
+//		Galaxy currentGalaxy = currentGame.getGalaxy();
+//		return currentGalaxy.getPlanets();
+//	}
 }

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,11 +12,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.conquest.services.JsonViewProfiles;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 //Planets are the players primary challenge in the game as well as the source of resources
 //Planets may be made into factory worlds or recruiting worlds; each providing its own benefits
@@ -26,16 +33,22 @@ import lombok.NoArgsConstructor;
 //Planets have various factors which determine how well they work as a factory, clone, or logistic world
 
 //Each game contains 20 planets randomly determined by the API
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="planets")
+@Getter
+@Setter
+@EqualsAndHashCode(exclude="galaxies")
+@ToString(exclude="galaxies")
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Planet {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@JsonView({ JsonViewProfiles.Galaxy.class, JsonViewProfiles.Planet.class })
 	private int id;// planet id 
+	
 	private String url; // the planet's url
 	private String image;
 	/*
@@ -65,8 +78,9 @@ public class Planet {
 	
 	
 	// A list of galaxies that this planet is a part of
+	@ManyToMany(mappedBy = "planets", fetch=FetchType.LAZY)
 	@JsonView(JsonViewProfiles.Planet.class)
-    @ManyToMany(mappedBy = "planets")
+	@JsonIgnore
     private Set<Galaxy> galaxies;
 
 
