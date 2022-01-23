@@ -1,7 +1,6 @@
 package com.conquest.controller;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -17,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.conquest.models.Galaxy;
+import com.conquest.models.GalaxyDTO;
 import com.conquest.models.Game;
-import com.conquest.models.Planet;
-import com.conquest.models.User;
 import com.conquest.services.GameService;
-
-import lombok.var;
 
 @RestController
 @RequestMapping("/games")
@@ -64,21 +60,18 @@ public class GameController {
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
-	@GetMapping("/galaxy/{id}")
-	public ResponseEntity<Set<Planet>> getAllPlanetsOfAGalaxy(@PathVariable("id") int id) {
-		Optional<Game> optionalGame;
-		if((optionalGame = gameServ.findById(id)) != null) {
-			Game returnedGame = optionalGame.isPresent() ? optionalGame.get() : null;
-			Galaxy galaxy;
-			if((galaxy = returnedGame.getGalaxy())!=null) {
-				if(!galaxy.getPlanets().isEmpty()) {
-					return ResponseEntity.ok().body(galaxy.getPlanets());
-				}
-			}
+	@GetMapping("/{id}/galaxy")
+	public ResponseEntity<?> getAllPlanetsOfAGalaxy(@PathVariable("id") int id) {
+		Galaxy galaxy;
+		if((galaxy = gameServ.getGalaxy(id)) != null) {
+			GalaxyDTO galaxyDTO = new GalaxyDTO(galaxy);
+				return ResponseEntity.ok()
+	                    .body(galaxyDTO.getPlanets());
 		}
-		
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
+	
+	
 	
 	/*
 	 * User returnedUser;

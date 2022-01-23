@@ -1,5 +1,7 @@
 package com.conquest.models;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,11 +11,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.conquest.services.JsonViewProfiles;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude="galaxy")
+@ToString(exclude="galaxy")
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
