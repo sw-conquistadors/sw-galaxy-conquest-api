@@ -76,14 +76,36 @@ public class Planet {
 	//The population of a planet determines how many troops can be recruited from it
 	private long population;
 	
-	
 	// A list of galaxies that this planet is a part of
 	@ManyToMany(mappedBy = "planets", fetch=FetchType.LAZY)
 	@JsonView(JsonViewProfiles.Planet.class)
 	@JsonIgnore
     private Set<Galaxy> galaxies;
 
-
+	
+	public long recruitingValue() {
+		long population = this.population;
+		long recruitment = 0;
+		while (population > 10) {
+			recruitment ++;
+			population = population/10;
+		}
+		
+		return recruitment;
+	}
+	
+	public int factoryValue(Planet planet) {
+		
+		int diameter = this.diameter;
+		int factory = 0;
+		while (diameter > 10) {
+			factory++;
+			diameter = diameter/10;
+		}
+		
+		return factory;
+	}
+	
 	public Planet(String url, String image, double gravity, String climate, String name, String terrain, int tier,
 			int average, int recruitment, int factory, int diameter, long population, Set<Galaxy> galaxies) {
 		super();
@@ -101,6 +123,5 @@ public class Planet {
 		this.population = population;
 		this.galaxies = galaxies;
 	}
-
 }
 
