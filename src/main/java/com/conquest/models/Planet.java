@@ -76,19 +76,16 @@ public class Planet {
 	//The population of a planet determines how many troops can be recruited from it
 	private long population;
 	
-<<<<<<< HEAD
-	//The scope of a planet determines how many 
-	private int scope;
+	// A list of galaxies that this planet is a part of
+	@ManyToMany(mappedBy = "planets", fetch=FetchType.LAZY)
+	@JsonView(JsonViewProfiles.Planet.class)
+	@JsonIgnore
+    private Set<Galaxy> galaxies;
+
 	
-	//The type of planet this is
-	//0 = enemy controlled
-	//1 = recruiting
-	//2 = factory
-	private int planetType; 
-	
-	public int recruitingValue() {
-		int population = this.population;
-		int recruitment = 0;
+	public long recruitingValue() {
+		long population = this.population;
+		long recruitment = 0;
 		while (population > 10) {
 			recruitment ++;
 			population = population/10;
@@ -108,41 +105,7 @@ public class Planet {
 		
 		return factory;
 	}
-
-	public int getDiameter() {
-		return diameter;
-	}
-
-	public void setDiameter(int diameter) {
-		this.diameter = diameter;
-	}
-
-	public int getPopulation() {
-		return population;
-	}
-
-	public void setPopulation(int population) {
-		this.population = population;
-	}
-
-	public int getScope() {
-		return scope;
-	}
-
-	public void setScope(int scope) {
-		this.scope = scope;
-	}
 	
-	
-=======
-	
-	// A list of galaxies that this planet is a part of
-	@ManyToMany(mappedBy = "planets", fetch=FetchType.LAZY)
-	@JsonView(JsonViewProfiles.Planet.class)
-	@JsonIgnore
-    private Set<Galaxy> galaxies;
-
-
 	public Planet(String url, String image, double gravity, String climate, String name, String terrain, int tier,
 			int average, int recruitment, int factory, int diameter, long population, Set<Galaxy> galaxies) {
 		super();
@@ -160,7 +123,5 @@ public class Planet {
 		this.population = population;
 		this.galaxies = galaxies;
 	}
-
->>>>>>> main
 }
 
